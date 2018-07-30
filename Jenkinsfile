@@ -1,31 +1,21 @@
 pipeline {
-  agent {
-    label "jenkins-maven"
-  }
-  environment {
-    DEPLOY_NAMESPACE = "jx-staging"
-  }
-  stages {
-    stage('Validate Environment') {
-      steps {
-        container('maven') {
-          dir('env') {
-            sh 'jx step helm build'
-          }
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
         }
-      }
-    }
-    stage('Update Environment') {
-      when {
-        branch 'master'
-      }
-      steps {
-        container('maven') {
-          dir('env') {
-            sh 'jx step helm apply'
-          }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
         }
-      }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
     }
-  }
 }
